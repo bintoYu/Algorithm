@@ -11,30 +11,40 @@ package 排序;
  */
 public class 快速排序
 {
-	public static int Partition(int[] array,int start,int end){
-        int key=array[start];
-        while(start < end){
-            while(array[end] > key && end > start){//从后半部分向前扫描
+	    public void sort(int[] nums){
+        quickSort(nums,0,nums.length-1);
+    }
+
+    private void quickSort(int[] nums,int start,int end) {
+        if (start < end) {
+            int index = partition(nums,start,end);
+            quickSort(nums,start,index-1);
+            quickSort(nums,index+1,end);
+        }
+    }
+
+    private int partition(int[] nums, int start, int end) {
+        int key = nums[start];
+        while (end > start) {
+            //从后往前扫，找到比基准小的
+            while (end > start && nums[end] > key) {
                 end--;
             }
-            array[start]=array[end];
-            while(array[start] <= key && end>start){//从前半部分向后扫描
+            nums[start] = nums[end];
+            //从前往后扫，找到比基准大的
+            while (end > start && nums[start] <= key) {
                 start++;
             }
-            array[end]=array[start];
+            nums[end] = nums[start];
         }
-        array[end]=key;
-        return end;
+        nums[start] = key;
+
+        return start;
     }
-	
-	public void quickSort(int[] array,int start,int end)
-	{
-		if(start == end)
-			return ;
-		int index = Partition(array, start, end);
-		if(index > start)
-			quickSort(array, start, index - 1);
-		if(index < end)
-			quickSort(array, index + 1, end);
-	}
+
+    public static void main(String[] args) {
+        int[] nums = {2,4,6,8,4,1,3,5,7,9};
+        new 快速排序().sort(nums);
+        System.out.println(Arrays.asList(nums));
+    }
 }
